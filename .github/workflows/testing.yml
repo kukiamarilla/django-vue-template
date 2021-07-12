@@ -52,15 +52,15 @@ jobs:
         npm install
     - name: Run Vue Unit Tests
       run: |
+        npm run build
         npm run test:unit
-    - uses: cypress-io/github-action@v2
+    - name: Run Test Server
+      run: |
+        python manage.py testserver tests/e2e/fixtures/*.json &
+    - name: Run E2E Cypress Test
+      uses: cypress-io/github-action@v2
       with:
         browser: chrome
-    - name: Run E2E Cypress Tests
-      run: |
-        python manage.py testserver tests/e2e/fixtures/*.json
-        npm run build
-        npx cypress run
     - name: Archive Cypress results
       uses: actions/upload-artifact@v2
       with:
@@ -68,3 +68,9 @@ jobs:
         path: |
           tests/e2e/screenshots
           tests/e2e/videos
+    - name: Linting de Python
+      run: |
+        flake8
+    - name: Linting de Vue
+      run: |
+        npm run lint
