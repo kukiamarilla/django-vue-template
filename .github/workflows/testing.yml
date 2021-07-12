@@ -58,6 +58,7 @@ jobs:
         browser: chrome
     - name: Run E2E Cypress Tests
       run: |
+        python manage.py testserver tests/e2e/fixtures/*.json
         npm run build
         npx cypress run
     - name: Archive Cypress results
