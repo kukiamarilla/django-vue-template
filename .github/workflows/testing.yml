@@ -1,4 +1,4 @@
-name: Django CI
+name: Testing
 
 on:
   push:
@@ -36,7 +36,13 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
-    - name: Run Unit Tests
+    - name: Run Django Unit Tests
       run: |
         coverage run --omit='*/venv/*' manage.py test
         coverage html
+    - name: Setup Vue
+      uses: actions/setup-node@master
+    - name: Run Vue Unit Tests
+      run: |
+        npm install
+        npm run test:unit
