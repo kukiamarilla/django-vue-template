@@ -23,7 +23,7 @@
 //
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
-const path = require("path");
+
 Cypress.Commands.add("setupDB", (setupFunc, mutable) => {
     const settingsPath = Cypress.env().settingsPath
     cy.exec(
