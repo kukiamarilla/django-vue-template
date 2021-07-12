@@ -40,9 +40,30 @@ jobs:
       run: |
         coverage run --omit='*/venv/*' manage.py test
         coverage html
-    - name: Setup Vue
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v2
+      with:
+        name: code-coverage-report
+        path: htmlcov
+    - name: Setup Node
       uses: actions/setup-node@master
-    - name: Run Vue Unit Tests
+    - name: Install dependencies
       run: |
         npm install
+    - name: Run Vue Unit Tests
+      run: |
         npm run test:unit
+    - uses: cypress-io/github-action@v2
+      with:
+        browser: chrome
+    - name: Run E2E Cypress Tests
+      run: |
+        npm run build
+        npx cypress run
+    - name: Archive Cypress results
+      uses: actions/upload-artifact@v2
+      with:
+        name: cypress-result
+        path: |
+          tests/e2e/screenshots
+          tests/e2e/videos
